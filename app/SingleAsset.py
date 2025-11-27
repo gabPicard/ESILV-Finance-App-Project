@@ -32,7 +32,7 @@ with st.sidebar:
 
     ma_period = None
     if strategy_name == "Momentum":
-        ma_period = momentum_period_slider(default=20)
+        ma_period = momentum_period_slider(default=3)
 
 try:
     with st.spinner("Téléchargement des données..."):

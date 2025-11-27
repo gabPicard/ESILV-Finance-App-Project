@@ -34,5 +34,5 @@ def select_strategy():
     )
 
 
-def momentum_period_slider(default: int = 20):
-    return st.slider("Période de la moyenne mobile (jours) :", 5, 100, default)
+def momentum_period_slider(default: int = 3):
+    return st.slider("Période de la moyenne mobile (jours) :", 3, 5, 100, default)

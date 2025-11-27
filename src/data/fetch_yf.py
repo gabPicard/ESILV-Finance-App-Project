@@ -3,6 +3,8 @@ import pandas as pd
 
 def get_history(asset: str, period="1y", interval="1d") -> pd.DataFrame:
     df = yf.download(asset, period=period, interval=interval)
+    if isinstance(df.columns, pd.MultiIndex):
+        df.columns = [c[0] for c in df.columns]
     df = df.reset_index()
     df.rename(columns={"Close": "price"}, inplace=True)
     df = df[["Date", "price"]]
