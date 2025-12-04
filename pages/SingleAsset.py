@@ -36,7 +36,7 @@ with st.sidebar:
     mr_threshold = None
 
     if strategy_name == "Momentum":
-        ma_period = momentum_period_slider(default=3)
+        ma_period = momentum_period_slider(default=20)
 
     elif strategy_name == "Mean Reversion":
         mr_period = st.slider("Période MA (mean reversion)", 5, 60, 20)
