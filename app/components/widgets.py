@@ -28,7 +28,7 @@ def select_interval():
 def select_strategy():
     return st.radio(
         "Stratégie :",
-        ["Buy & Hold", "Momentum"],
+        ["Buy & Hold", "Momentum", "Mean Reversion"],
         index=0,
         horizontal=True,
     )

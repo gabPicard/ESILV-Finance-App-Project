@@ -13,6 +13,7 @@ from components.charts import price_and_strategy_chart
 from src.data.fetch_yf import get_history
 from src.strategies.buy_and_hold import run_buy_and_hold
 from src.strategies.momentum import run_momentum
+from src.strategies.mean_reversion import run_mean_reversion
 from src.evaluation.backtesting import backtest
 
 st.set_page_config(
@@ -31,8 +32,16 @@ with st.sidebar:
     strategy_name = select_strategy()
 
     ma_period = None
+    mr_period = None
+    mr_threshold = None
+
     if strategy_name == "Momentum":
         ma_period = momentum_period_slider(default=3)
+
+    elif strategy_name == "Mean Reversion":
+        mr_period = st.slider("Période MA (mean reversion)", 5, 60, 20)
+        mr_threshold = st.slider("Seuil (%)", 1, 10, 2) / 100
+
 
 try:
     with st.spinner("Téléchargement des données..."):
@@ -55,8 +64,10 @@ col_top_right.write(f"Nombre de points : {len(df)}")
 
 if strategy_name == "Buy & Hold":
     strategy_series = run_buy_and_hold(df)
-else:
+elif strategy_name == "Momentum":
     strategy_series = run_momentum(df, period=ma_period)
+else:
+    strategy_series = run_mean_reversion(df, period=mr_period, threshold=mr_threshold)
 
 results = backtest(strategy_series)
 
