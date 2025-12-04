@@ -2,11 +2,8 @@ import streamlit as st
 
 
 def select_asset():
-    return st.selectbox(
-        "Choisir un actif :",
-        ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"],
-        index=0,
-    )
+    return st.text_input("Ticker (ex: AAPL, MSFT, BTC-USD)", value="AAPL").upper()
+
 
 
 def select_period():
