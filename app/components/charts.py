@@ -16,6 +16,7 @@ def price_and_strategy_chart(
             y=df_price["price"],
             name="Prix",
             mode="lines",
+            visible="legendonly",
         )
     )
 
