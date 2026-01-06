@@ -224,7 +224,18 @@ def run(config=None):
     cum_value = compute_cumulative_value(portfolio_returns, initial_value=initial_value)
     stats_df = portfolio_stats(portfolio_returns, periods_per_year=periods_per_year)
 
-    st.line_chart(cum_value)
+    # --- Performance Comparison Chart (Base 100) ---
+    # Normalize asset prices to start at 100 for comparison
+    normalized_assets = (price_df / price_df.iloc[0]) * 100
+
+    # Normalize portfolio value to start at 100
+    portfolio_normalized = (cum_value / cum_value.iloc[0]) * 100
+    portfolio_df = portfolio_normalized.to_frame(name="Portfolio")
+
+    # Combine assets and portfolio into one DataFrame for plotting
+    chart_data = pd.concat([normalized_assets, portfolio_df], axis=1)
+
+    st.line_chart(chart_data)
 
     st.markdown("Portfolio statistics")
     st.dataframe(
@@ -236,7 +247,6 @@ def run(config=None):
             }
         )
     )
-
     # ---- 6) Diversification effect ----
     st.subheader("6) Diversification effect")
 
