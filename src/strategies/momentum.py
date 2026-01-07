@@ -2,7 +2,7 @@ import pandas as pd
 
 def run_momentum(df: pd.DataFrame, period: int = 20) -> pd.Series:
     if "price" not in df.columns:
-        raise ValueError("Le DataFrame doit contenir une colonne 'price'.")
+        raise ValueError("The DataFrame must contain a 'price' column.")
     df = df.copy()
 
     df["ma"] = df["price"].rolling(period).mean().shift(1)

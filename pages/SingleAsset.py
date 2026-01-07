@@ -19,20 +19,20 @@ from src.strategies.mean_reversion import run_mean_reversion
 from src.evaluation.backtesting import backtest
 
 st.set_page_config(
-    page_title="Analyse d'un actif",
+    page_title="Analysis of a single asset (Quant A)",
     page_icon="📈",
     layout="wide",
 )
 
 count = st_autorefresh(interval=300000, limit=None, key="single_asset_refresh")
 
-st.title("Analyse d'un actif (Quant A)")
+st.title("Analysis of a single asset (Quant A)")
 
 if count > 0:
     st.info(f"Data updated - {datetime.now().strftime('%H:%M:%S')}")
 
 with st.sidebar:
-    st.header("Paramètres")
+    st.header("Parameters")
     ticker = select_asset()
     period = select_period()
     interval = select_interval()
@@ -46,28 +46,28 @@ with st.sidebar:
         ma_period = momentum_period_slider(default=20)
 
     elif strategy_name == "Mean Reversion":
-        mr_period = st.slider("Période MA (mean reversion)", 5, 60, 20)
-        mr_threshold = st.slider("Seuil (%)", 1, 10, 2) / 100
+        mr_period = st.slider("MA Period (mean reversion)", 5, 60, 20)
+        mr_threshold = st.slider("Threshold (%)", 1, 10, 2) / 100
 
 
 try:
-    with st.spinner("Téléchargement des données..."):
+    with st.spinner("Downloading data..."):
         df = get_history(ticker, period=period, interval=interval)
         if df is None or df.empty:
-            st.error(f"Aucune donnée disponible pour {ticker} avec la période '{period}' et l'intervalle '{interval}'.")
+            st.error(f"No data available for {ticker} with period '{period}' and interval '{interval}'.")
             st.stop()
 except Exception as e:
-    st.error(f"Erreur lors du téléchargement des données : {e}")
+    st.error(f"Error downloading data: {e}")
     st.stop()
 
-st.subheader(f"Historique de {ticker}")
+st.subheader(f"History of {ticker}")
 
 col_top_left, col_top_right = st.columns(2)
 
 col_top_left.write(
-    f"Période téléchargée : {df.index.min().date()} → {df.index.max().date()}"
+    f"Downloaded period: {df.index.min().date()} → {df.index.max().date()}"
 )
-col_top_right.write(f"Nombre de points : {len(df)}")
+col_top_right.write(f"Number of points: {len(df)}")
 
 if strategy_name == "Buy & Hold":
     strategy_series = run_buy_and_hold(df)
@@ -78,16 +78,16 @@ else:
 
 results = backtest(strategy_series)
 
-st.subheader("📊 Indicateurs de performance")
+st.subheader("📊 Performance Indicators")
 
 m1, m2, m3, m4 = st.columns(4)
 
 m1.metric(
-    "Rendement total",
+    "Total Return",
     f"{results['total_return']*100:,.2f} %",
 )
 m2.metric(
-    "Volatilité annualisée",
+    "Annualized Volatility",
     f"{results['annual_vol']*100:,.2f} %",
 )
 m3.metric(
@@ -99,10 +99,10 @@ m4.metric(
     f"{results['max_drawdown']*100:,.2f} %",
 )
 
-st.subheader("📉 Prix et stratégie")
+st.subheader("📉 Price and Strategy")
 
 fig = price_and_strategy_chart(df, strategy_series, title=f"{ticker} - {strategy_name}")
 st.plotly_chart(fig, use_container_width=True)
 
-with st.expander("Voir les données brutes"):
+with st.expander("View raw data"):
     st.dataframe(df.tail(20))

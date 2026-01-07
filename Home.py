@@ -1,30 +1,30 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Menu principal",
+    page_title="Main Menu",
     page_icon="📘",
     layout="centered",
 )
 
-st.title("Menu principal")
+st.title("Main Menu")
 st.markdown("---")
 
-st.header("Choisissez une section")
+st.header("Choose a section")
 
 st.page_link(
     "pages/SingleAsset.py",
-    label="Analyse d’un actif (Single Asset)",
+    label="Single Asset Analysis (Quant A)",
     icon="📊"
 )
 
 st.page_link(
     "pages/Portfolio.py",
-    label="Analyse d’un portefeuille (Portfolio)",
+    label="Portfolio Analysis (Quant B)",
     icon="🧮"
 )
 
 st.markdown("---")
-st.header("Projet réalisé par")
+st.header("Project by")
 
 st.write("**Gabriel PICARD**")  
 st.write("**Alex THEAGENE**")  
