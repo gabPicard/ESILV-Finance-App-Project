@@ -5,7 +5,7 @@ import pandas as pd
 def price_and_strategy_chart(
     df_price: pd.DataFrame,
     strategy_series: pd.Series | None = None,
-    title: str = "Prix et stratégie",
+    title: str = "Price and Strategy Chart",
 ):
 
     fig = go.Figure()
@@ -14,7 +14,7 @@ def price_and_strategy_chart(
         go.Scatter(
             x=df_price.index,
             y=df_price["price"],
-            name="Prix",
+            name="Price",
             mode="lines",
         )
     )
@@ -32,10 +32,10 @@ def price_and_strategy_chart(
             go.Scatter(
                 x=df_price.index,
                 y=strat_scaled,
-                name="Stratégie (échelle prix)",
+                name="Strategy (price scaled)",
                 mode="lines",
             )
         )
 
-    fig.update_layout(title=title, xaxis_title="Date", yaxis_title="Valeur")
+    fig.update_layout(title=title, xaxis_title="Date", yaxis_title="Value")
     return fig
