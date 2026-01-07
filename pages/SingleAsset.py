@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+from streamlit_autorefresh import st_autorefresh
+from datetime import datetime
 
 from app.components.widgets import (
     select_asset,
@@ -22,7 +24,12 @@ st.set_page_config(
     layout="wide",
 )
 
-st.title("Analyse d’un actif (Quant A)")
+count = st_autorefresh(interval=300000, limit=None, key="single_asset_refresh")
+
+st.title("Analyse d'un actif (Quant A)")
+
+if count > 0:
+    st.info(f"Data updated - {datetime.now().strftime('%H:%M:%S')}")
 
 with st.sidebar:
     st.header("Paramètres")
